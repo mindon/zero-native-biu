@@ -1,0 +1,4 @@
+.DS_Store
+/frontend/dist
+.zig-cache
+zig-out
