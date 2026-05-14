@@ -2,6 +2,8 @@
 
 A minimal zero-native desktop app with a web frontend with html + typescript, using <https://github.com/mindon/biu>  based on <https://bun.sh>.
 
+<img width="640" alt="znbiu-demo" src="https://github.com/user-attachments/assets/e7e00edc-8fe6-47ad-9d04-60ef1e469870" />
+
 ## Requirements
 
 - **zig** from <https://ziglang.org/>
