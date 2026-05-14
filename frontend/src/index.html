@@ -1,51 +1,39 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="bg-light">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZeroN + biu Demo App</title>
-    <script src="./_share/imaps.ts?bootstrap&three"></script>
+    <script src="./_share/imaps.ts?three&md"></script>
+    <link rel="stylesheet" href="assets/style.scss" />
     <style>
-      * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; background: black; }
-      body {
-        height: 100vh;
-        overflow: hidden;
-        background-color: #1a1a1a;
-        position: relative;
+      * {
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
         font-family: -apple-system, "SF Pro Display", "PingFang SC", sans-serif;
       }
-
-      /* Classical computing: ONE large hexagon, half black "0" / half white "1" */
-      .hex-bg {
+      body {
+        background-color: #222;
+      }
+      hello-world {
         position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        display: grid;
-        place-items: center;
-        background: radial-gradient(ellipse at center, #2a2a2a 0%, #0a0a0a 80%);
-        opacity: .3;
+        left: 50%;
+        width: 280px;
+        transform: translateX(-140px);
+        top: 108px;
       }
-      .hex-bg svg {
-        width: min(92vmin, 92vmin);
-        height: min(92vmin, 92vmin);
-        opacity: 0.9;
-        filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7));
-        animation: hex-spin 120s linear infinite;
+      #theme-show {
+        background-color: var(--md-sys-color-primary, #222);
+        zoom: 0.2;
+        position: fixed;
+        text-align: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
-      @keyframes hex-spin {
-        from { transform: rotate(0deg); }
-        to   { transform: rotate(360deg); }
-      }
-      .hex-bg::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.75) 100%);
-        pointer-events: none;
-      }
-
       /* Brand title — top */
       .qc-title {
         position: fixed;
@@ -56,14 +44,17 @@
         color: #f0f0f0;
         text-align: center;
         letter-spacing: 0.15em;
-        text-shadow: 0 2px 24px rgba(0,0,0,0.85);
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
       }
       .qc-title h1 {
         margin: 0;
         font-size: clamp(1.4rem, 2.6vw, 2.2rem);
         font-weight: 300;
       }
-      .qc-title h1 b { font-weight: 600; color: #fff; }
+      .qc-title h1 b {
+        font-weight: 600;
+        color: #fff;
+      }
       .qc-title p {
         margin: 0.35rem 0 0;
         font-size: 0.78rem;
@@ -80,11 +71,14 @@
         transform: translate(-50%, -50%) scale(0.94);
         z-index: 9;
         text-align: center;
-        color: #fff;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.28s ease, transform 0.28s cubic-bezier(.2,.8,.2,1);
-        text-shadow: 0 2px 24px rgba(0,0,0,0.95), 0 0 40px rgba(120,180,255,0.35);
+        transition:
+          opacity 0.28s ease,
+          transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+        text-shadow:
+          0 2px 24px rgba(0, 0, 0, 0.95),
+          0 0 40px rgba(120, 180, 255, 0.35);
       }
       .qc-info.show {
         opacity: 1;
@@ -95,7 +89,12 @@
         font-size: clamp(2.2rem, 5vw, 4rem);
         font-weight: 700;
         letter-spacing: 0.22em;
-        background: linear-gradient(90deg, #ffffff 0%, #b5d4ff 50%, #ffffff 100%);
+        background: linear-gradient(
+          90deg,
+          #ffffff 0%,
+          #b5d4ff 50%,
+          #ffffff 100%
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -151,7 +150,7 @@
           0 6px 20px rgba(0, 0, 0, 0.35),
           inset 0 1px 0 rgba(255, 255, 255, 0.18);
         transition:
-          transform 0.25s cubic-bezier(.2,.8,.2,1),
+          transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
           background 0.25s ease,
           border-color 0.25s ease,
           box-shadow 0.25s ease;
@@ -180,7 +179,10 @@
         display: inline-block;
         transition: opacity 0.2s ease, transform 0.2s ease;
       }
-      .qc-btn:hover .label { opacity: 0; transform: scale(0.7); }
+      .qc-btn:hover .label {
+        opacity: 0;
+        transform: scale(0.7);
+      }
 
       /* Press shockwave */
       .qc-btn .pulse {
@@ -191,61 +193,35 @@
         opacity: 0;
         pointer-events: none;
       }
-      .qc-btn:active .pulse { animation: ring-out 0.55s ease-out; }
+      .qc-btn:active .pulse {
+        animation: ring-out 0.55s ease-out;
+      }
       @keyframes ring-out {
-        0%   { transform: scale(0.85); opacity: 0.9; }
-        100% { transform: scale(1.8);  opacity: 0;   }
+        0% {
+          transform: scale(0.85);
+          opacity: 0.9;
+        }
+        100% {
+          transform: scale(1.8);
+          opacity: 0;
+        }
       }
 
       @media (max-width: 640px) {
-        .qc-portal { gap: 0.9rem; }
-        .qc-btn { width: 62px; height: 62px; font-size: 0.78rem; }
+        .qc-portal {
+          gap: 0.9rem;
+        }
+        .qc-btn {
+          width: 62px;
+          height: 62px;
+          font-size: 0.78rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Classical computing: one big hexagon, half black "0", half white "1" -->
-    <div class="hex-bg" aria-hidden="true">
-      <!-- Flat-top hexagon. Vertices: (100,10) (190,55) (190,145) (100,190) (10,145) (10,55).
-           Left half = black "0"; right half = white "1". -->
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <clipPath id="hexClip">
-            <polygon points="100,10 190,55 190,145 100,190 10,145 10,55"/>
-          </clipPath>
-        </defs>
-        <g clip-path="url(#hexClip)">
-          <!-- left half: black, with "0" -->
-          <rect x="0" y="0" width="100" height="200" fill="#0a0a0a"/>
-          <text x="55" y="100"
-                fill="#ffffff"
-                font-family="-apple-system, SF Pro Display, Menlo, monospace"
-                font-size="110"
-                font-weight="800"
-                text-anchor="middle"
-                dominant-baseline="central"
-                opacity="0.92">0</text>
-          <!-- right half: white, with "1" -->
-          <rect x="100" y="0" width="100" height="200" fill="#f5f5f5"/>
-          <text x="145" y="100"
-                fill="#0a0a0a"
-                font-family="-apple-system, SF Pro Display, Menlo, monospace"
-                font-size="110"
-                font-weight="800"
-                text-anchor="middle"
-                dominant-baseline="central"
-                opacity="0.92">1</text>
-        </g>
-        <!-- hexagon outline -->
-        <polygon points="100,10 190,55 190,145 100,190 10,145 10,55"
-                 fill="none" stroke="#888" stroke-width="1.2" opacity="0.6"/>
-        <!-- center divider -->
-        <line x1="100" y1="10" x2="100" y2="190" stroke="#666" stroke-width="0.8" opacity="0.5"/>
-      </svg>
-    </div>
-
     <header class="qc-title">
-      <h1>A ZeroNative Demo</h1>
+      <h1>A ZeroNative App Demo</h1>
       <p>github.com/vercel-labs/zero-native</p>
     </header>
 
@@ -257,59 +233,139 @@
 
     <!-- Floating entrance buttons: simple translucent circles -->
     <nav class="qc-portal" aria-label="ZeroNative">
-      <button class="qc-btn" data-algo="ZeroNative" data-sub="Build desktop + mobile apps with Zig and web UI" aria-label="ZeroNative">
+      <button
+        class="qc-btn"
+        data-algo="ZeroNative"
+        data-sub="Build desktop + mobile apps with Zig and web UI"
+        aria-label="ZeroNative"
+      >
         <span class="label">ZeroN</span>
         <span class="pulse" aria-hidden="true"></span>
       </button>
-      <button class="qc-btn" data-algo="BUN" data-sub="all-in-one toolkit for js/ts" aria-label="BUN">
-        <span class="label">BUN</span>
+      <button
+        class="qc-btn"
+        data-algo="lit
+        web components"
+        data-sub="Simple. Fast. Web Components."
+        aria-label="lit web components"
+      >
+        <span class="label">lit</span>
         <span class="pulse" aria-hidden="true"></span>
       </button>
-      <button class="qc-btn" data-algo="biu - for ts+html" data-sub="github.com/mindon/biu" aria-label="biu - for ts+html">
+      <button
+        class="qc-btn"
+        data-algo="biu - for ts+html"
+        data-sub="github.com/mindon/biu"
+        aria-label="biu - for ts+html"
+      >
         <span class="label">biu</span>
         <span class="pulse" aria-hidden="true"></span>
       </button>
-      <button class="qc-btn" data-algo="ZeroN + biu" data-sub="github.com/mindon/zero-native-biu" aria-label="ZeroN + biu">
+      <button
+        class="qc-btn"
+        data-algo="BUN"
+        data-sub="all-in-one toolkit for js/ts"
+        aria-label="BUN"
+      >
+        <span class="label">BUN</span>
+        <span class="pulse" aria-hidden="true"></span>
+      </button>
+      <button
+        class="qc-btn"
+        data-algo="ZN + biu"
+        data-sub="github.com/mindon/zero-native-biu"
+        aria-label="ZN + biu"
+      >
         <span class="label">Demo</span>
         <span class="pulse" aria-hidden="true"></span>
       </button>
     </nav>
 
+    <hello-world></hello-world>
+    <div id="theme-show">
+      <img
+        src="./assets/img/browsers.png"
+        data-area="2248,0,562,281"
+        usemap="#themes"
+      />
+    </div>
+    <map name="themes">
+      <area
+        shape="rect"
+        coords="0,0,562,562"
+        alt="Chrome"
+        href="#0,281,562,281"
+      >
+      <area
+        shape="rect"
+        coords="562,0,1124,562"
+        alt="Edge"
+        href="#562,281,562,281"
+      >
+      <area
+        shape="rect"
+        coords="1124,0,1686,562"
+        alt="Firefox"
+        href="#1124,0,562,281"
+      >
+      <area
+        shape="rect"
+        coords="1686,0,2248,562"
+        alt="Opera"
+        href="#1686,0,562,281"
+      >
+      <area
+        shape="rect"
+        coords="2248,0,2810,562"
+        alt="Safari"
+        href="#2248,0,562,281"
+      >
+    </map>
+    <script type="module" src="widgets/hello-world.ts"></script>
+    <script type="module">
+      import { themeFromImage } from "./_share/theme.ts";
+      function applyArea(dom) {
+        const area = dom.getAttribute("href").substr(1);
+        themeFromImage(document.querySelector("img"), area);
+      }
+
+      document.querySelectorAll("area").forEach((elm) => {
+        elm.addEventListener("click", (evt) => {
+          applyArea(evt.target);
+        });
+      });
+    </script>
     <script type="module" src="widgets/bloch-x.rg5z9d2y.js"></script>
     <script>
-      const info = document.getElementById('qcInfo');
-      const infoName = info.querySelector('.name');
-      const infoSub = info.querySelector('.sub');
+      const info = document.getElementById("qcInfo");
+      const infoName = info.querySelector(".name");
+      const infoSub = info.querySelector(".sub");
 
       const showInfo = (btn) => {
-        infoName.textContent = btn.dataset.algo || '';
-        infoSub.textContent = btn.dataset.sub || '';
-        info.classList.add('show');
+        infoName.textContent = btn.dataset.algo || "";
+        infoSub.textContent = btn.dataset.sub || "";
+        info.classList.add("show");
       };
-      const hideInfo = () => info.classList.remove('show');
+      const hideInfo = () => info.classList.remove("show");
 
-      document.querySelectorAll('.qc-btn').forEach((btn) => {
-        btn.addEventListener('mouseenter', () => showInfo(btn));
-        btn.addEventListener('focus', () => showInfo(btn));
-        btn.addEventListener('mouseleave', hideInfo);
-        btn.addEventListener('blur', hideInfo);
+      document.querySelectorAll(".qc-btn").forEach((btn) => {
+        btn.addEventListener("mouseenter", () => showInfo(btn));
+        btn.addEventListener("focus", () => showInfo(btn));
+        btn.addEventListener("mouseleave", hideInfo);
+        btn.addEventListener("blur", hideInfo);
 
-        btn.addEventListener('click', () => {
+        btn.addEventListener("click", () => {
           const algo = btn.dataset.algo;
-          // brief background flash: classical <-> quantum coupling
-          const bg = document.querySelector('.hex-bg svg');
-          if (bg) {
-            bg.animate(
-              [
-                { filter: 'none', opacity: 0.9 },
-                { filter: 'invert(1) hue-rotate(200deg)', opacity: 1 },
-                { filter: 'none', opacity: 0.9 },
-              ],
-              { duration: 600, easing: 'ease-out' }
-            );
-          }
-          console.log('[QC³] enter:', algo);
-          window.dispatchEvent(new CustomEvent('qc:enter', { detail: { algo } }));
+          console.log(algo);
+
+          // const win = await window.zero.windows.create({
+          //   label: algo,
+          //   title: btn.dataset.sub,
+          //   width: 420,
+          //   height: 320,
+          // });
+          // await window.zero.windows.focus(win.id);
+          // https://zero-native.dev/windows
         });
       });
     </script>

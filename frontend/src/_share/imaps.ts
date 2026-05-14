@@ -10,7 +10,7 @@ imaps.textContent = `{
     "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/",
     "three/fonts/": "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/fonts/"`
     : ""
-}
+}${q.has("md") ? `,"@material/web/": "https://esm.run/@material/web/"` : ""}
 }
 }`;
 const assets: Array<HTMLElement> = [imaps];
@@ -31,6 +31,14 @@ if (q.has("bootstrap")) {
   s.integrity =
     "sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB";
   s.crossOrigin = "anonymous";
+  assets.push(s);
+}
+if (q.has("md")) {
+  const s = document.createElement("script");
+  s.type = "module";
+  s.textContent = `import '@material/web/all.js';
+import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+document.adoptedStyleSheets.push(typescaleStyles.styleSheet);`;
   assets.push(s);
 }
 

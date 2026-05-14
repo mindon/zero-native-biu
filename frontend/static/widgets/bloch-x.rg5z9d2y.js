@@ -1,4 +1,69 @@
-import*as q from"https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.min.js";import{OrbitControls as j}from"https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/controls/OrbitControls.js";var W=new q.Scene,K=new q.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000),F=new q.WebGLRenderer({antialias:!0,alpha:!0});F.setPixelRatio(Math.min(window.devicePixelRatio||1,2));F.setSize(window.innerWidth-20,window.innerHeight-20);document.body.appendChild(F.domElement);function $(){let k=window.innerWidth-20,B=window.innerHeight-20;K.aspect=k/B,K.updateProjectionMatrix(),F.setPixelRatio(Math.min(window.devicePixelRatio||1,2)),F.setSize(k,B)}window.addEventListener("resize",$);var C=new q.SphereGeometry(1,32,32),G=new q.BufferGeometry().setFromPoints([new q.Vector3(0,0,0),new q.Vector3(0,1,0)]),O=new q.LineBasicMaterial({color:16711680}),J=new q.Line(G,O);W.add(J);K.position.z=3;function Z(){requestAnimationFrame(Z);let k=performance.now()*0.001;P.uTime.value=k,P.uEntropy.value=A.entropy,U(),F.render(W,K)}var A={rotation:0,entropy:0,targetEntropy:0.2,pointerPos:new q.Vector3(0,1,0)};window.addEventListener("mousemove",(k)=>{let B=k.clientX/window.innerWidth*2-1,I=k.clientY/window.innerHeight*2-1;A.rotation=B*Math.PI,A.targetEntropy=1-(1+I)/2});function U(){A.entropy+=(A.targetEntropy-A.entropy)*0.1;let k=1-A.entropy,B=Math.cos(A.rotation)*k,I=Math.sin(A.rotation)*k,L=0;V(A.entropy,B,I,L)}function V(k,B,I,L){let D=1-k;Q.scale.set(D,D,D),Q.material.wireframeLineWidth=1+k*5,J.lookAt(new q.Vector3(B,L,-I)),J.scale.set(D,D,D),J.material.opacity=D;let N=Math.floor((1-k)*20);document.body.style.backgroundColor=`rgb(${N}, ${N}, ${N+10})`}var X=`
+import * as q from "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.min.js";
+import { OrbitControls as j } from "https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/controls/OrbitControls.js";
+var W = new q.Scene(),
+  K = new q.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000,
+  ),
+  F = new q.WebGLRenderer({ antialias: !0, alpha: !0 });
+F.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+F.setSize(window.innerWidth - 20, window.innerHeight - 20);
+document.body.appendChild(F.domElement);
+function $() {
+  let k = window.innerWidth - 20, B = window.innerHeight - 20;
+  K.aspect = k / B,
+    K.updateProjectionMatrix(),
+    F.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)),
+    F.setSize(k, B);
+}
+window.addEventListener("resize", $);
+var C = new q.SphereGeometry(1, 32, 32),
+  G = new q.BufferGeometry().setFromPoints([
+    new q.Vector3(0, 0, 0),
+    new q.Vector3(0, 1, 0),
+  ]),
+  O = new q.LineBasicMaterial({ color: 16711680 }),
+  J = new q.Line(G, O);
+W.add(J);
+K.position.z = 3;
+function Z() {
+  requestAnimationFrame(Z);
+  let k = performance.now() * 0.001;
+  P.uTime.value = k, P.uEntropy.value = A.entropy, U(), F.render(W, K);
+}
+var A = {
+  rotation: 0,
+  entropy: 0,
+  targetEntropy: 0.2,
+  pointerPos: new q.Vector3(0, 1, 0),
+};
+window.addEventListener("mousemove", (k) => {
+  let B = k.clientX / window.innerWidth * 2 - 1,
+    I = k.clientY / window.innerHeight * 2 - 1;
+  A.rotation = B * Math.PI, A.targetEntropy = 1 - (1 + I) / 2;
+});
+function U() {
+  A.entropy += (A.targetEntropy - A.entropy) * 0.1;
+  let k = 1 - A.entropy,
+    B = Math.cos(A.rotation) * k,
+    I = Math.sin(A.rotation) * k,
+    L = 0;
+  V(A.entropy, B, I, L);
+}
+function V(k, B, I, L) {
+  let D = 1 - k;
+  Q.scale.set(D, D, D),
+    Q.material.wireframeLineWidth = 1 + k * 5,
+    J.lookAt(new q.Vector3(B, L, -I)),
+    J.scale.set(D, D, D),
+    J.material.opacity = D;
+  let N = Math.floor(
+    (1 - k) * 20,
+  ); /*document.body.style.backgroundColor=`rgb(${N}, ${N}, ${N+10})`*/
+}
+var X = `
     varying vec2 vUv;
     varying float vNoise;
     uniform float uTime;
@@ -57,7 +122,8 @@ import*as q from"https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.m
         vec3 newPosition = position + normal * vNoise * 0.3;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
     }
-`,Y=`
+`,
+  Y = `
     varying vec2 vUv;
     varying float vNoise;
     uniform float uEntropy;
@@ -75,4 +141,15 @@ import*as q from"https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.m
         float alpha = 0.8 - uEntropy * 0.5;
         gl_FragColor = vec4(color, alpha);
     }
-`,P={uTime:{value:0},uEntropy:{value:0}},_=new q.ShaderMaterial({vertexShader:X,fragmentShader:Y,uniforms:P,transparent:!0,wireframe:!0}),Q=new q.Mesh(C,_);W.add(Q);Z();
+`,
+  P = { uTime: { value: 0 }, uEntropy: { value: 0 } },
+  _ = new q.ShaderMaterial({
+    vertexShader: X,
+    fragmentShader: Y,
+    uniforms: P,
+    transparent: !0,
+    wireframe: !0,
+  }),
+  Q = new q.Mesh(C, _);
+W.add(Q);
+Z();

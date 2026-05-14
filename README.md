@@ -1,6 +1,14 @@
 # ZeroN-biu
 
-A minimal zero-native desktop app with a web frontend with html + typescript, using <https://github.com/mindon/biu> (required) based on <https://bun.sh>(required).
+A minimal zero-native desktop app with a web frontend with html + typescript, using <https://github.com/mindon/biu>  based on <https://bun.sh>.
+
+## Requirements
+
+- **zig** from <https://ziglang.org/>
+- **zero-native** from <https://zero-native.dev/>
+- **bun** from <https://bun.sh>
+- **biu** from <https://github.com/mindon/biu>
+
 
 ## Setup
 
